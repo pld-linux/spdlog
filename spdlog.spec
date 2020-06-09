@@ -2,13 +2,14 @@ Summary:	Very fast C++ logging library
 Summary(pl.UTF-8):	Bardzo szybka biblioteka C++ do logowania
 Name:		spdlog
 Version:	1.12
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Libraries
 #Source0Download: https://github.com/COMBINE-lab/spdlog/releases
 Source0:	https://github.com/COMBINE-lab/spdlog/archive/v%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	e05894aef7494567b417328cee683a55
 Patch0:		libdir.patch
+Patch1:		var-name-clash.patch
 URL:		https://github.com/COMBINE-lab/spdlog
 BuildRequires:	cmake >= 3.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -36,6 +37,7 @@ logowania.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 install -d build
