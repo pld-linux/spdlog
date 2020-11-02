@@ -1,21 +1,22 @@
 Summary:	Very fast C++ logging library
 Summary(pl.UTF-8):	Bardzo szybka biblioteka C++ do logowania
 Name:		spdlog
-Version:	1.12
-Release:	2
+Version:	1.8.1
+Release:	1
+Epoch:		1
 License:	MIT
 Group:		Development/Libraries
-#Source0Download: https://github.com/COMBINE-lab/spdlog/releases
-Source0:	https://github.com/COMBINE-lab/spdlog/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	e05894aef7494567b417328cee683a55
-Patch0:		libdir.patch
-Patch1:		var-name-clash.patch
+#Source0Download: https://github.com/gabime/spdlog/releases
+Source0:	https://github.com/gabime/spdlog/archive/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	765838829ada66a35002dbb3ba3fed30
 URL:		https://github.com/COMBINE-lab/spdlog
-BuildRequires:	cmake >= 3.1
+BuildRequires:	cmake >= 3.10
+BuildRequires:	libfmt-devel >= 5.3.0
+BuildRequires:	pkgconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Very fast, header only, C++ logging library. 
+Very fast C++ logging library.
 
 %description -l pl.UTF-8
 Bardzo szybka, składająca się z samych nagłówków biblioteka C++ do
@@ -25,10 +26,11 @@ logowania.
 Summary:	Very fast C++ logging library
 Summary(pl.UTF-8):	Bardzo szybka biblioteka C++ do logowania
 Group:		Development/Libraries
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	libstdc++-devel >= 6:4.7
 
 %description devel
-Very fast, header only, C++ logging library. 
+Very fast C++ logging library.
 
 %description devel -l pl.UTF-8
 Bardzo szybka, składająca się z samych nagłówków biblioteka C++ do
@@ -36,14 +38,13 @@ logowania.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 %build
 install -d build
 cd build
 %cmake .. \
-	-DBUILD_TESTING=OFF
+	-DSPDLOG_BUILD_SHARED=ON \
+	-DSPDLOG_FMT_EXTERNAL=ON
 
 %{__make}
 
@@ -56,9 +57,18 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files devel
+%post    -p /sbin/ldconfig
+%postun    -p /sbin/ldconfig
+
+%files
 %defattr(644,root,root,755)
 %doc LICENSE README.md
+%attr(755,root,root) %{_libdir}/libspdlog.so.*.*.*
+%ghost %{_libdir}/libspdlog.so.1
+
+%files devel
+%defattr(644,root,root,755)
+%{_libdir}/libspdlog.so
 %{_includedir}/spdlog
 %{_pkgconfigdir}/spdlog.pc
 %{_libdir}/cmake/spdlog
