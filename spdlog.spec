@@ -14,6 +14,7 @@ BuildRequires:	cmake >= 3.10
 BuildRequires:	libfmt-devel >= 5.3.0
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.605
+Requires:	libfmt >= 5.3.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
