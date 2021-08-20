@@ -1,15 +1,15 @@
 Summary:	Very fast C++ logging library
 Summary(pl.UTF-8):	Bardzo szybka biblioteka C++ do logowania
 Name:		spdlog
-Version:	1.8.5
+Version:	1.9.2
 Release:	1
 Epoch:		1
 License:	MIT
 Group:		Development/Libraries
 #Source0Download: https://github.com/gabime/spdlog/releases
 Source0:	https://github.com/gabime/spdlog/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	8755cdbc857794730a022722a66d431a
-URL:		https://github.com/COMBINE-lab/spdlog
+# Source0-md5:	cee7f3d31178a00791d7a22c6738df6d
+URL:		https://github.com/gabime/spdlog
 BuildRequires:	cmake >= 3.10
 BuildRequires:	libfmt-devel >= 5.3.0
 BuildRequires:	pkgconfig
