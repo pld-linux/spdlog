@@ -2,7 +2,7 @@ Summary:	Very fast C++ logging library
 Summary(pl.UTF-8):	Bardzo szybka biblioteka C++ do logowania
 Name:		spdlog
 Version:	1.15.3
-Release:	1
+Release:	2
 Epoch:		1
 License:	MIT
 Group:		Development/Libraries
