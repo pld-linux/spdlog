@@ -1,21 +1,31 @@
+#
+# Conditional build:
+%bcond_without	cxx20	# C++ 20 std::format instead of libfmt
+
 Summary:	Very fast C++ logging library
 Summary(pl.UTF-8):	Bardzo szybka biblioteka C++ do logowania
 Name:		spdlog
-Version:	1.15.3
-Release:	2
+Version:	1.17.0
+Release:	1
 Epoch:		1
 License:	MIT
 Group:		Development/Libraries
 #Source0Download: https://github.com/gabime/spdlog/releases
 Source0:	https://github.com/gabime/spdlog/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	fffda902bb4a04ce814ddd5328d95e8a
+# Source0-md5:	f0d8dd02539fe609bdfd42c0549fe28d
 URL:		https://github.com/gabime/spdlog
 BuildRequires:	cmake >= 3.10
-BuildRequires:	libfmt-devel >= 5.3.0
+%if %{with cxx20}
+BuildRequires:	libstdc++-devel >= 6:13
+%else
+BuildRequires:	libfmt-devel >= 12.1
 BuildRequires:	libstdc++-devel >= 6:4.7
+%endif
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.605
-Requires:	libfmt >= 5.3.0
+%if %{without cxx20}
+Requires:	libfmt >= 12.1
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -30,7 +40,12 @@ Summary:	Very fast C++ logging library
 Summary(pl.UTF-8):	Bardzo szybka biblioteka C++ do logowania
 Group:		Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+%if %{with cxx20}
+Requires:	libstdc++-devel >= 6:13
+%else
+Requires:	libfmt-devel >= 12.1
 Requires:	libstdc++-devel >= 6:4.7
+%endif
 
 %description devel
 Very fast C++ logging library.
@@ -46,7 +61,11 @@ logowania.
 install -d build
 cd build
 %cmake .. \
+%if %{with cxx20}
+	-DSPDLOG_USE_STD_FORMAT=ON \
+%else
 	-DSPDLOG_FMT_EXTERNAL=ON
+%endif
 
 %{__make}
 
@@ -66,7 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc LICENSE README.md
 %{_libdir}/libspdlog.so.*.*.*
-%ghost %{_libdir}/libspdlog.so.1.15
+%ghost %{_libdir}/libspdlog.so.1.17
 
 %files devel
 %defattr(644,root,root,755)
