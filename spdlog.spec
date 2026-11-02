@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_without	cxx20	# C++ 20 std::format instead of libfmt
+%bcond_without	cxx20	# C++ 20 std::format instead of libfmt (users of library must be built with C++20 too)
 
 Summary:	Very fast C++ logging library
 Summary(pl.UTF-8):	Bardzo szybka biblioteka C++ do logowania
